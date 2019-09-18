@@ -5,7 +5,7 @@ Useful when you already have a JSON Schema and want to document the types you wa
 
 ## Usage
 ```js
-const jsdoc = require('json-schema-to-jsdoc');
+const jsdoc = require('@phileas/json-schema-to-jsdoc');
 
 const schema = {
   "id": "Person",

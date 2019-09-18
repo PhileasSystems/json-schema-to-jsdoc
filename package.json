@@ -1,5 +1,5 @@
 {
-  "name": "json-schema-to-jsdoc",
+  "name": "@phileas/json-schema-to-jsdoc",
   "version": "0.0.1",
   "description": "JSON Schema to JSDoc generator",
   "main": "index.js",
