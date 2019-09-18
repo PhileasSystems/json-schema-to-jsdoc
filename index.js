@@ -14,7 +14,7 @@ function generate(schema, options = {}) {
   jsdoc += writeDescription(schema);
 
   if (!json.has(schema, '/properties')){
-   return jsdoc;
+    return jsdoc;
   }
 
   jsdoc += processProperties(schema, false, options);
@@ -24,7 +24,7 @@ function generate(schema, options = {}) {
   return jsdoc;
 }
 
-function processProperties(schema, nested, options = {}) {
+function processProperties(schema, parentPropertyPath = false, options = {}) {
   const props = json.get(schema, '/properties');
   const required = json.has(schema, '/required') ? json.get(schema, '/required') : [];
 
@@ -33,15 +33,15 @@ function processProperties(schema, nested, options = {}) {
     if (Array.isArray(options.ignore) && options.ignore.includes(property)) {
       continue;
     } else {
-      let prefix = nested ? '.' : '';
+      const propertyPath = [parentPropertyPath, property].filter(e => e).join('.');
+      const optional = !required.includes(property);
 
       if (props[property].type === 'object' && props[property].properties) {
-        text += writeParam('object', prefix + property, props[property].description, true);
-        text += processProperties(props[property], true);
+        text += writeParam('object', propertyPath, props[property].description, optional);
+        text += processProperties(props[property], propertyPath);
       } else {
-        let optional = !required.includes(property);
-        let type = getType(props[property]) || upperFirst(property);
-        text += writeParam(type, prefix + property, props[property].description, optional);
+        const type = getType(props[property]) || upperFirst(property);
+        text += writeParam(type, propertyPath, props[property].description, optional);
       }
     } 
   }
@@ -56,7 +56,7 @@ function writeDescription(schema, suffix = 'object') {
 
 function writeParam(type = '', field, description = '', optional) {
   const fieldTemplate = optional ? `[${field}]` : field;
-  return `  * @property {${type}} ${fieldTemplate} - ${description} \n`;
+  return `  * @property {${type}} ${[fieldTemplate, description].filter(e => e != '').join(' - ')}\n`;
 }
 
 function getType(schema) {
