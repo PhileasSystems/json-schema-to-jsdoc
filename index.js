@@ -19,7 +19,7 @@ function generate(schema, options = {}) {
 
   jsdoc += processProperties(schema, false, options);
 
-  jsdoc += '  */\n';
+  jsdoc += '  */';
 
   return jsdoc;
 }
