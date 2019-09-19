@@ -49,8 +49,8 @@ function processProperties(schema, parentPropertyPath = false, options = {}) {
 }
 
 function writeDescription(schema, suffix = 'object') {
-  let text = schema.description || `Represents a ${schema.id} ${suffix}`;
-  text += `\n  * @name ${upperFirst(schema.id)}`;
+  let text = schema.description || `Represents a ${schema.title} ${suffix}`;
+  text += `\n  * @name ${upperFirst(schema.title)}`;
   return `  * ${text}\n  *\n`;
 }
 
